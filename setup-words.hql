@@ -19,6 +19,7 @@ FIELDS TERMINATED BY '\t'
 
 -- have not been able to get injected paths to work with Hive yet but the
 -- full hard-coded paths do. 
+-- this is for 'local' use
 
 FROM (
    FROM docs
@@ -32,3 +33,22 @@ SELECT TRANSFORM (wc.word, wc.count)
        USING '/Users/Shared/projects/hive-transform-example/reducer.py' 
        AS word, count
 ;
+
+-- for cluster use you have to add the files to the DistributedCache
+-- and invoke them differently. at least on my cluster (cdh4.2)
+
+-- add file /home/rgordon/transform-test/mapper.py;
+-- add file /home/rgordon/transform-test/reducer.py;
+
+-- FROM (
+--   FROM videometa.assets_data
+--   SELECT TRANSFORM (keywords) 
+--          USING 'python mapper.py' 
+--          AS word, count
+--   CLUSTER BY word
+--) wc
+--INSERT OVERWRITE TABLE word_count
+--SELECT TRANSFORM (wc.word, wc.count) 
+--       USING 'python reducer.py' 
+--       AS word, count
+--;

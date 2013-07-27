@@ -11,6 +11,7 @@ for line in sys.stdin:
 	else:
 		last_key = key 
 		last_count += int(count)
-		
-	if last_key:
-		print "%s\t%d" % (last_key, last_count)
+
+# for debugging
+#	if last_key:
+#		print "%s\t%d" % (last_key, last_count)
